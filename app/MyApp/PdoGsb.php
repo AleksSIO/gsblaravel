@@ -43,6 +43,15 @@ class PdoGsb{
 	}
 
 
+/**
+ * Verifie les informations d'un visiteur
+ 
+ * @param $login 
+ * @param $mdp
+ * @return l'id, le nom et le prénom sous la forme d'un tableau associatif 
+*/
+
+
 
 /**
  * Retourne sous forme d'un tableau associatif toutes les lignes de frais au forfait

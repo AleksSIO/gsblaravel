@@ -48,5 +48,11 @@ Route::post('sauvegarderFrais',[
         'uses'=>'gererFraisController@sauvegarderFrais'
 ]);
 
+Route::get('listeVisiteurs',[
+    'as'=>'chemin_gestionVisiteurs',
+    'uses'=>'listeVisiteursController@listeVisiteurs'
+]);
+
+
 
 

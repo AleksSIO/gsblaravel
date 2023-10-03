@@ -1,0 +1,4 @@
+1 - Modèle (Fonction getInfosGestionnaire()): Amine
+2 - Controller Connexion : Aleksandar
+3 - Route : Amine
+4 - Vue : Aleksandar

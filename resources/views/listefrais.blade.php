@@ -1,26 +1,35 @@
 @extends ('sommaire')
 @section('contenu1')
 
-<h3>Fiche de frais du mois {{ $numMois }}-{{ $numAnnee }} :
-    </h3>
-    <div class="encadre">
-    <p>
-    Etat : <strong>{{ $libEtat }} depuis le {{ $dateModif }} </strong>
-         <br> Montant validé : <strong>{{ $montantValide }} </strong>
-     </p>
-  	<table class="listeLegere">
-  	   <caption>Eléments forfaitisés </caption>
-        <tr>
+
+<div class="overflow-auto rounded-lg">
+    <div class="text-center">
+        <h2 class="text-2xl font-semibold mb-4">Renseigner ma fiche de frais du mois {{ $numMois }}-{{ $numAnnee }}</h2>
+        <p>
+            Etat : <strong>{{ $libEtat }} depuis le {{ $dateModif }} </strong><br>
+
+            Montant validé : <strong>{{ $montantValide }} </strong>
+        </p>
+    </div>
+    <table class="w-full table-fixed">
+        <caption class="caption-top">
+            <h3> Eléments forfaitisés </h3>
+        </caption>
+        <thead class="bg-gray-50 border-b-2 border-gray-200 ">
+        <tr class="border-b dark:border-neutral-500">
             @foreach($lesFraisForfait as $unFraisForfait)
-			    <th> {{$unFraisForfait['libelle']}} </th>
+                <th class="p-3 text-sm font-semibold tracking-wide text-left"> {{$unFraisForfait['libelle']}} </th>
             @endforeach
-		</tr>
-        <tr>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="bg-grey border-b">
             @foreach($lesFraisForfait as $unFraisForfait)
-                <td class="qteForfait">{{ $unFraisForfait['quantite'] }}
-                </td>
+                <td class="p-3 text-sm text-gray-700">{{ $unFraisForfait['quantite'] }}</td>
             @endforeach
-		</tr>
+        </tr>
+        </tbody>
     </table>
-  	</div>
+</div>
 @endsection

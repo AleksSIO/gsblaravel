@@ -3,10 +3,10 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="{{ app()->getLocale() }}">
   <head>
-    <title>Intranet de GSB</title>
+    <title>Intranet - GSB</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" type=""></script>
   </head>
   <body class="bg-blue-100" >
 

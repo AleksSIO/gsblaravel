@@ -242,7 +242,7 @@ class PdoGsb{
     /* Select ` */
 
     public function listeVisiteurs(){
-        $req = "SELECT id, nom, prenom FROM visiteur";
+        $req = "SELECT * FROM visiteur";
         $res = $this->monPdo->prepare($req);
         $res->execute();
         $lignes = $res->fetchAll();

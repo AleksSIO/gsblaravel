@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -47,11 +49,14 @@ Route::post('sauvegarderFrais',[
         'as'=>'chemin_sauvegardeFrais',
         'uses'=>'gererFraisController@sauvegarderFrais'
 ]);
-
-Route::get('listeVisiteurs',[
+/*liste des visiteurs */
+Route::get('listerVisiteurs',[
     'as'=>'chemin_gestionVisiteurs',
-    'uses'=>'listeVisiteursController@listeVisiteurs'
+    'uses'=>'listeVisiteursController@lister'
 ]);
+/*afficher les  visiteurs */
+
+
 
 
 

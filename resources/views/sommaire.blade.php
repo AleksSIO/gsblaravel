@@ -1,37 +1,37 @@
 @extends ('modeles/visiteur')
     @section('menu')
-            <!-- Division pour le sommaire -->
-        <div id="menuGauche">
-            <div id="infosUtil">
+        <div class="bg-blue-500 w-2/8  p-4">
+            <!-- Navigation links -->
+            <div><img src="{{ asset('images/logo-preview.png')}}" alt="GSB" alt="Laboratoire Galaxy-Swiss Bourdin" title="Laboratoire Galaxy-Swiss Bourdin" ></div>
+            <nav class="text-white">
+                <h2 class="text-2xl font-semibold mb-4">Navigation</h2>
+                <ul class="p-2">
+                    @isset($visiteur)
+                        <li >
+                            <strong>Bonjour {{ $visiteur['nom'] . ' ' . $visiteur['prenom'] }}</strong>
+                        </li>
 
-             </div>
-               <ul id="menuList">
-               @isset($visiteur)
-                   <li >
-                    <strong>Bonjour {{ $visiteur['nom'] . ' ' . $visiteur['prenom'] }}</strong>
+                        <li class="mb-2">
+                            <a href="{{ route('chemin_gestionFrais')}}" title="Saisie fiche de frais ">Saisie fiche de frais</a>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ route('chemin_selectionMois') }}" title="Consultation de mes fiches de frais">Mes fiches de frais</a>
+                        </li>
+                    @endisset
+                    @isset($gestionnaire)
+                        <li >
+                            <strong>Bonjour {{ $gestionnaire['nom'] . ' ' . $gestionnaire['prenom'] }}</strong>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ route('chemin_gestionVisiteurs') }}" title="Gestion des visiteurs">Gestion des visiteurs</a>
+                        </li>
 
-                   </li>
-                  <li class="smenu">
-                     <a href="{{ route('chemin_gestionFrais')}}" title="Saisie fiche de frais ">Saisie fiche de frais</a>
-                  </li>
-                  <li class="smenu">
-                    <a href="{{ route('chemin_selectionMois') }}" title="Consultation de mes fiches de frais">Mes fiches de frais</a>
-                  </li>
-               @endisset
-               @isset($gestionnaire)
-                       <li >
-                           <strong>Bonjour {{ $gestionnaire['nom'] . ' ' . $gestionnaire['prenom'] }}</strong>
-
-                       </li>
-
-                       <li class="smenu">
-                           <a href="{{ route('chemin_gestionVisiteurs') }}" title="Gestion des visiteurs">Gestion des visiteurs</a>
-                       </li>
-               @endisset
-               <li class="smenu">
-                <a href="{{ route('chemin_deconnexion') }}"" title="Se déconnecter">Déconnexion</a>
-                  </li>
+                    @endisset
+                    <li class="mb-2">
+                        <a href="{{ route('chemin_deconnexion') }}" title="Se déconnecter">Déconnexion</a>
+                    </li>
                 </ul>
-
+            </nav>
         </div>
+
     @endsection

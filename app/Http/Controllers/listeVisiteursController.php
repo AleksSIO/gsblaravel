@@ -3,19 +3,21 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use PdoGsb;
-use MyDate;
+
 class listeVisiteursController extends Controller
 {
-    function listeVisiteurs(){
-        if(session('gestionnaire') != null){
-            $lesVisiteurs = PdoGsb::listeVisiteurs();
-            return view('listeVisiteurs')
-                        ->with('lesVisiteurs', $lesVisiteurs);
-        }
-        else{
-            return view('connexion')->with('erreurs',null);
-        }
 
+    function lister(Request $request){
+        $lesVisiteurs = PdoGsb::listeVisiteurs();
+        if(session('gestionnaire') != null){
+            $gestionnaire = session('gestionnaire');
+            $view = view('listeVisiteurs')
+                ->with('lesVisiteurs',$lesVisiteurs)
+                ->with('gestionnaire',$gestionnaire);
+        }else{
+            $view = view('connexion')->with('erreurs',null);
+        }
+        return $view;
     }
 
 

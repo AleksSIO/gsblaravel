@@ -1,7 +1,7 @@
-@extends ('listemois')
-@section('contenu2')
+@extends ('sommaire')
+@section('contenu1')
 
-<h3>Fiche de frais du mois {{ $numMois }}-{{ $numAnnee }} : 
+<h3>Fiche de frais du mois {{ $numMois }}-{{ $numAnnee }} :
     </h3>
     <div class="encadre">
     <p>
@@ -17,7 +17,7 @@
 		</tr>
         <tr>
             @foreach($lesFraisForfait as $unFraisForfait)
-                <td class="qteForfait">{{ $unFraisForfait['quantite'] }} 
+                <td class="qteForfait">{{ $unFraisForfait['quantite'] }}
                 </td>
             @endforeach
 		</tr>

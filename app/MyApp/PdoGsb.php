@@ -45,6 +45,7 @@ class PdoGsb{
 
 /**
  * Verifie les informations d'un visiteur
+<<<<<<< HEAD
 
  * @param $login
  * @param $mdp

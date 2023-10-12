@@ -3,11 +3,11 @@ namespace App\MyApp;
 use PDO;
 use Illuminate\Support\Facades\Config;
 class PdoGsb{
-        private static $serveur;
-        private static $bdd;
-        private static $user;
-        private static $mdp;
-        private  $monPdo;
+        private static string $serveur;
+        private static string $bdd;
+        private static mixed $user;
+        private static mixed $mdp;
+        private PDO $monPdo;
 
 /**
  * crée l'instance de PDO qui sera sollicitée
@@ -233,8 +233,7 @@ class PdoGsb{
         $res->bindValue(':login', $login, PDO::PARAM_STR);
         $res->bindValue(':mdp', $mdp, PDO::PARAM_STR);
         $res->execute();
-        $ligne = $res->fetch();
-        return $ligne;
+        return $res->fetch();
     }
 
 
@@ -245,11 +244,40 @@ class PdoGsb{
         $req = "SELECT * FROM visiteur";
         $res = $this->monPdo->prepare($req);
         $res->execute();
-        $lignes = $res->fetchAll();
-
-        return $lignes;
+        return $res->fetchAll();
     }
 
+    public function unVisiteur($id){
+        $req = "SELECT * FROM visiteur WHERE id=$id";
+        $res = $this->monPdo->prepare($req);
+        $res->execute();
+        return $res->fetch();
+    }
+
+    public function suppVisiteur($id){
+        $req = "DELETE FROM `visiteur` WHERE id=$id";
+        $res = $this->monPdo->prepare($req);
+        $res->execute();
+        return true;
+    }
+
+    public function modifierVisiteur($id,$nom,$prenom,$login,$mdp,$adresse,$cp,$ville,$dateEmbauche){
+        $req = "UPDATE `visiteur`
+                SET `nom`=$nom,`prenom`=$prenom,`login`=$login,`mdp`=$mdp,`adresse`=$adresse,`cp`=$cp,`ville`=$ville,`dateEmbauche`=$dateEmbauche
+                WHERE id=$id";
+        $res = $this->monPdo->prepare($req);
+        $res->execute();
+        return true;
+
+    }
+
+    public function insererVisiteur($id,$nom,$prenom,$login,$mdp,$adresse,$cp,$ville,$dateEmbauche){
+        $req = "INSERT INTO `visiteur`(`id`, `nom`, `prenom`, `login`, `mdp`, `adresse`, `cp`, `ville`, `dateEmbauche`)
+                VALUES ($id,$nom,$prenom,$login,$mdp,$adresse,$cp,$ville,$dateEmbauche)";
+        $res = $this->monPdo->prepare($req);
+        $res->execute();
+        return true;
+    }
 
 
 }

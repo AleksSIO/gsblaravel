@@ -250,34 +250,34 @@ class PdoGsb{
     }
 
     public function unVisiteur($id){
-        $req = "SELECT * FROM visiteur WHERE id=$id";
+        $req = "SELECT * FROM visiteur WHERE id=?";
         $res = $this->monPdo->prepare($req);
-        $res->execute();
+        $res->execute([$id]);
         return $res->fetch();
     }
 
     public function suppVisiteur($id){
-        $req = "DELETE FROM `visiteur` WHERE id=$id";
+        $req = "DELETE FROM `visiteur` WHERE id=?";
         $res = $this->monPdo->prepare($req);
-        $res->execute();
+        $res->execute([$id]);
         return true;
     }
 
     public function modifierVisiteur($id,$nom,$prenom,$login,$mdp,$adresse,$cp,$ville,$dateEmbauche){
         $req = "UPDATE `visiteur`
-                SET `nom`=$nom,`prenom`=$prenom,`login`=$login,`mdp`=$mdp,`adresse`=$adresse,`cp`=$cp,`ville`=$ville,`dateEmbauche`=$dateEmbauche
-                WHERE id=$id";
+                SET `nom`=?,`prenom`=?,`login`=?,`mdp`=?,`adresse`=?,`cp`=?,`ville`=?,`dateEmbauche`=?
+                WHERE `id`=?";
         $res = $this->monPdo->prepare($req);
-        $res->execute();
+        $res->execute([$nom,$prenom,$login,$mdp,$adresse,$cp,$ville,$dateEmbauche,$id]);
         return true;
 
     }
 
     public function insererVisiteur($id,$nom,$prenom,$login,$mdp,$adresse,$cp,$ville,$dateEmbauche){
         $req = "INSERT INTO `visiteur`(`id`, `nom`, `prenom`, `login`, `mdp`, `adresse`, `cp`, `ville`, `dateEmbauche`)
-                VALUES ($id,$nom,$prenom,$login,$mdp,$adresse,$cp,$ville,$dateEmbauche)";
+                VALUES (?,?,?,?,?,?,?,?,?)";
         $res = $this->monPdo->prepare($req);
-        $res->execute();
+        $res->execute([$id,$nom,$prenom,$login,$mdp,$adresse,$cp,$ville,$dateEmbauche]);
         return true;
     }
 

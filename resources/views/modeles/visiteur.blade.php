@@ -5,7 +5,7 @@
   <head>
     <title>Intranet - GSB</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    <link rel="shortcut icon" href="https://img.icons8.com/ios/50/factory.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com" type=""></script>
   </head>
   <body class="bg-blue-100" >

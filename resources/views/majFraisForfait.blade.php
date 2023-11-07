@@ -6,7 +6,8 @@
             {{ csrf_field() }} <!-- Laravel va ajouter un champ caché avec un token -->
             <div class="corpsForm">
                 <fieldset>
-                    <div class="text-center"><legend class="text-center text-lg font-semibold">Eléments forfaitisés</legend></div>
+                    <div class="text-center">
+                        <legend class="text-center text-lg font-semibold">Eléments forfaitisés</legend></div>
                     @includeWhen($erreurs != null, 'msgerreurs', ['erreurs' => $erreurs])
                     @includeWhen($message != "", 'message', ['message' => $message])
                     @foreach ($lesFrais as $key => $frais)

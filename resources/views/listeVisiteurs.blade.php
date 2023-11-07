@@ -3,7 +3,11 @@
 
     <div class="w-full">
         <table class="table-auto mx-auto">
-            <caption>Liste des visiteurs </caption>
+            <caption class="my-4">Liste des visiteurs -
+                <a href="{{ route('ajouterVisiteurs') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded justify-end">Ajouter visiteur</a>
+
+            </caption>
+
             <thead class="bg-gray-50 border-b-2 border-gray-200 ">
 
             <tr class="border-b dark:border-neutral-500">
@@ -23,8 +27,8 @@
                     <td class="p-3 text-sm text-gray-700">{{$unVisiteur['prenom']}}</td>
                     <td>
                         <div class="flex justify-center space-x-1">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded justify-end"><!-- Modifier -->&#128393;</button>
-                            <button class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 rounded justify-end"><!--Supprimer -->&#10060;</button>
+                            <a href="{{ route('chemin_modifierVisiteurs', $id=$unVisiteur['id']) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded justify-end"><!-- Modifier -->&#128393;</a>
+                            <a href="{{ route('supprimerVisiteurs', $id=$unVisiteur['id']) }}" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 rounded justify-end"><!--Supprimer -->&#10060;</a>
                         </div>
                     </td>
                 </tr>

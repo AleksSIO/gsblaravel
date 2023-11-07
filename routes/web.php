@@ -56,6 +56,28 @@ Route::get('listerVisiteurs',[
 ]);
 /*afficher les  visiteurs */
 
+Route::get('modifierVisiteurs/{id}', [
+    'as'=>'chemin_modifierVisiteurs',
+    'uses'=>'gererVisiteursController@afficherModifier'
+]);
+Route::post('modifierVisiteurs',[
+    'as'=>'modifierVisiteurs',
+    'uses'=>'gererVisiteursController@sauvegarderModifier'
+]);
+Route::get('supprimerVisiteur/{id}',[
+    'as'=>'supprimerVisiteurs',
+    'uses'=>'gererVisiteursController@supprimerVisiteur'
+]);
+Route::get('ajouterVisiteur',[
+    'as'=>'ajouterVisiteurs',
+    'uses'=>'gererVisiteursController@ajouterVisiteur'
+]);
+Route::post('confirmAjouterVisiteur',[
+    'as'=>'sendVisiteurs',
+    'uses'=>'gererVisiteursController@confirmajouterVisiteur'
+]);
+
+
 
 
 

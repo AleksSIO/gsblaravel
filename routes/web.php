@@ -76,6 +76,10 @@ Route::post('confirmAjouterVisiteur',[
     'as'=>'sendVisiteurs',
     'uses'=>'gererVisiteursController@confirmajouterVisiteur'
 ]);
+Route::get('genererpdf',[
+        'as'=>'genererPDF',
+        'uses'=>'PDFController@genererPDF'
+    ]);
 
 
 

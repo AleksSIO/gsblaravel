@@ -2,11 +2,12 @@
 @section('contenu1')
 
     <div class="w-full">
-        <table class="table-auto mx-auto">
-            <caption class="my-4">Liste des visiteurs -
+    <div class="my-4 w-full 2xl:ml-[39%] sm:ml-[25%]">Liste des visiteurs -
                 <a href="{{ route('ajouterVisiteurs') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded justify-end">Ajouter visiteur</a>
+                <a href="{{ route('genererPDF') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded justify-end">Générer PDF</a>
 
-            </caption>
+</div>
+        <table class="table-auto mx-auto">
 
             <thead class="bg-gray-50 border-b-2 border-gray-200 ">
 

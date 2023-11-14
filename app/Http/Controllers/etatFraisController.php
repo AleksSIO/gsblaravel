@@ -27,6 +27,24 @@ class etatFraisController extends Controller
 
     }
 
+    function selectionnerAnnee(){
+        if(session('comptable') != null){
+            $lesAnnees = PdoGsb::getLesMoisDisponibles($idVisiteur);
+		    // Afin de sélectionner par défaut le dernier mois dans la zone de liste
+		    // on demande toutes les clés, et on prend la première,
+		    // les mois étant triés décroissants
+		    $lesCles = array_keys( $lesMois );
+		    $moisASelectionner = $lesCles[0];
+            return view('listemois')
+                        ->with('lesMois', $lesMois)
+                        ->with('leMois', $moisASelectionner)
+                        ->with('visiteur',$visiteur);
+        }
+        else{
+            return view('connexion')->with('erreurs',null);
+        }
+    }
+
     function voirFrais(Request $request){
         if( session('visiteur')!= null){
             $visiteur = session('visiteur');

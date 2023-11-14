@@ -238,6 +238,16 @@ class PdoGsb{
         return $res->fetch();
     }
 
+	/*  select les comptables */
+    public function getInfosComptable($login, $mdp){
+        $req = "SELECT * FROM comptable WHERE login = :login AND mdp = :mdp";
+        $res = $this->monPdo->prepare($req);
+        $res->bindValue(':login', $login, PDO::PARAM_STR);
+        $res->bindValue(':mdp', $mdp, PDO::PARAM_STR);
+        $res->execute();
+        return $res->fetch();
+    }
+
 
 
     /* Select ` */

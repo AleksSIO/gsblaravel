@@ -27,6 +27,15 @@
                         </li>
 
                     @endisset
+                    @isset($comptable)
+                        <li >
+                            <strong>Bonjour {{ $comptable['nom'] . ' ' . $comptable['prenom'] }}</strong>
+                        </li>
+                        <li class="mb-2">
+                            <a href="{{ route('chemin_gestionVisiteurs') }}" title="Gestion des visiteurs">Gestion des visiteurs</a>
+                        </li>
+
+                    @endisset
                     <li class="mb-2">
                         <a href="{{ route('chemin_deconnexion') }}" title="Se déconnecter">Déconnexion</a>
                     </li>

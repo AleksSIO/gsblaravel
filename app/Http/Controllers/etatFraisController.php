@@ -28,17 +28,18 @@ class etatFraisController extends Controller
     }
 
     function selectionnerAnnee(){
-        if(session('comptable') != null){
-            $lesAnnees = PdoGsb::getLesMoisDisponibles($idVisiteur);
+        if(session('gestionnaire') != null){
+            $lesAnnees = PdoGsb::getLesAnnees();
+            $gestionnaire = session('gestionnaire');
 		    // Afin de sélectionner par défaut le dernier mois dans la zone de liste
 		    // on demande toutes les clés, et on prend la première,
 		    // les mois étant triés décroissants
-		    $lesCles = array_keys( $lesMois );
-		    $moisASelectionner = $lesCles[0];
-            return view('listemois')
-                        ->with('lesMois', $lesMois)
-                        ->with('leMois', $moisASelectionner)
-                        ->with('visiteur',$visiteur);
+		    $lesCles = array_keys( $lesAnnees );
+		    $anneeASelectionner = $lesCles[0];
+            return view('listeAnneeFrais')
+                        ->with('lesAnnees', $lesAnnees)
+                        ->with('lAnnee', $anneeASelectionner)
+                        ->with('gestionnaire',$gestionnaire);
         }
         else{
             return view('connexion')->with('erreurs',null);
@@ -68,6 +69,59 @@ class etatFraisController extends Controller
                     ->with('dateModif',$dateModifFr)
                     ->with('lesFraisForfait',$lesFraisForfait)
                     ->with('visiteur',$visiteur);
+            return $vue;
+        }
+        else{
+            return view('connexion')->with('erreurs',null);
+        }
+    }
+
+    function voirFraisAnnee(Request $request){
+        if( session('gestionnaire')!= null){
+            $gestionnaire = session('gestionnaire');
+            $lAnnee = $request['lstAnnee']; 
+		    $lesAnnees = PdoGsb::getLesAnnees();
+            $lesFraisAnnee = PdoGsb::getLesFichesFraisParAnnee($lAnnee);
+            $vue = view('listefraisAnnee')->with('lesAnnees', $lesAnnees)
+                    ->with('lesFraisAnnee', $lesFraisAnnee)
+                    ->with('lAnnee', $lAnnee)
+                    ->with('gestionnaire',$gestionnaire);
+            return $vue;
+        }
+        else{
+            return view('connexion')->with('erreurs',null);
+        }
+    }
+
+    function selectionnerVisiteur(){
+        if(session('gestionnaire') != null){
+            $lesVisiteurs = PdoGsb::listeVisiteurs();
+            $gestionnaire = session('gestionnaire');
+		    // Afin de sélectionner par défaut le dernier mois dans la zone de liste
+		    // on demande toutes les clés, et on prend la première,
+		    // les mois étant triés décroissants
+		    $lesCles = array_keys( $lesVisiteurs );
+		    $visiteurASelectionner = $lesCles[0];
+            return view('listeVisiteurFrais')
+                        ->with('lesVisiteurs', $lesVisiteurs)
+                        ->with('keyVisiteur', $visiteurASelectionner)
+                        ->with('gestionnaire',$gestionnaire);
+        }
+        else{
+            return view('connexion')->with('erreurs',null);
+        }
+    }
+
+    function voirFraisVisiteur(Request $request){
+        if( session('gestionnaire')!= null){
+            $gestionnaire = session('gestionnaire');
+            $leVisiteur = $request['lstVisiteur']; 
+		    $lesVisiteurs = PdoGsb::listeVisiteurs();
+            $lesFraisVisiteur = PdoGsb::getLesFichesFraisParVisiteur($leVisiteur);
+            $vue = view('listefraisVisiteur')->with('lesVisiteurs', $lesVisiteurs)
+                    ->with('lesFraisVisiteur', $lesFraisVisiteur)
+                    ->with('leVisiteur', $leVisiteur)
+                    ->with('gestionnaire',$gestionnaire);
             return $vue;
         }
         else{

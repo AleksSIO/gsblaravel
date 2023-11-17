@@ -29,7 +29,7 @@
                     <td>
                         <div class="flex justify-center space-x-1">
                             <a href="{{ route('chemin_modifierVisiteurs', $id=$unVisiteur['id']) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 rounded justify-end"><!-- Modifier -->&#128393;</a>
-                            <a href="{{ route('supprimerVisiteurs', $id=$unVisiteur['id']) }}" class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1 px-2 rounded justify-end"><!--Supprimer -->&#10060;</a>
+                            <a href="{{ route('supprimerVisiteurs', $id=$unVisiteur['id']) }}" class="bg-red-500 hover:bg-red-700 text-transparent [text-shadow:_0_0_0_white] font-semibold py-1 px-2 rounded justify-end"><!--Supprimer -->&#10060;</a>
                         </div>
                     </td>
                 </tr>

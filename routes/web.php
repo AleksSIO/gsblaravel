@@ -80,7 +80,22 @@ Route::get('genererpdf',[
         'as'=>'genererPDF',
         'uses'=>'PDFController@genererPDF'
     ]);
-
+Route::get('selectionAnnee',[
+        'as'=>'chemin_selectionAnnee',
+        'uses'=>'etatFraisController@selectionnerAnnee'
+]);
+Route::post('listeFraisAnnee',[
+        'as'=>'chemin_listeFraisAnnee',
+        'uses'=>'etatFraisController@voirFraisAnnee'
+]);
+Route::get('selectionVisiteur',[
+        'as'=>'chemin_selectionVisiteur',
+        'uses'=>'etatFraisController@selectionnerVisiteur'
+]);
+Route::post('listeFraisVisiteur',[
+        'as'=>'chemin_listeFraisVisiteur',
+        'uses'=>'etatFraisController@voirFraisVisiteur'
+]);
 
 
 

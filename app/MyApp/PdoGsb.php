@@ -291,5 +291,46 @@ class PdoGsb{
         return true;
     }
 
+	public function getLesAnnees(){
+		$req = "select distinct(left(mois, 4)) as annee from lignefraisforfait ORDER BY annee DESC"; 
+		$res = $this->monPdo->query($req);
+		$laLigne = $res->fetchAll();
+		return $laLigne;
+	}
 
+	public function getLesFichesFraisParAnnee($annee){
+		$req = "select lf.idVisiteur as numVisiteur,
+        sum(ff.montant * case when lf.idFraisForfait = 'ETP' then lf.quantite END) as 'ETP',
+        sum(ff.montant * case when lf.idFraisForfait = 'KM' then lf.quantite END) as 'KM',
+        sum(ff.montant * case when lf.idFraisForfait = 'NUI' then lf.quantite END) as 'NUI',
+        sum(ff.montant * case when lf.idFraisForfait = 'REP' then lf.quantite END) as 'REP'
+        from lignefraisforfait lf
+        inner join fraisforfait ff on ff.id = lf.idFraisForfait
+        where mois like :annee
+        GROUP BY lf.idVisiteur";
+        $res = $this->monPdo->prepare($req);
+        $res->bindValue(':annee', $annee . '%', PDO::PARAM_STR_CHAR);
+        $res->execute();
+        $laLigne = $res->fetchAll();
+        return $laLigne; 
+	}
+
+	public function getLesFichesFraisParVisiteur($idVisiteur){
+		$req = "select mois, 
+		sum(ff.montant * case when lf.idFraisForfait = 'ETP' then lf.quantite END) as 'ETP',
+		sum(ff.montant * case when lf.idFraisForfait = 'KM' then lf.quantite END) as 'KM',
+		sum(ff.montant * case when lf.idFraisForfait = 'NUI' then lf.quantite END) as 'NUI',
+		sum(ff.montant * case when lf.idFraisForfait = 'REP' then lf.quantite END) as 'REP' 
+		from lignefraisforfait lf 
+		inner join fraisforfait ff on ff.id = lf.idFraisForfait 
+		where idVisiteur = :visiteur 
+		GROUP BY mois 
+		ORDER BY mois DESC";
+		$res = $this->monPdo->prepare($req);
+        $res->bindValue(':visiteur', $idVisiteur, PDO::PARAM_STR);
+        $res->execute();
+        $laLigne = $res->fetchAll();
+        return $laLigne; 
+	
+	}
 }

@@ -28,6 +28,9 @@
                         <li class="mb-2">
                             <a href="{{ route('chemin_selectionAnnee') }}" title="Année Fiche Frais">Fiches frais par année</a>
                         </li>
+                        <li class="mb-2">
+                            <a href="{{ route('chemin_selectionVisiteur') }}" title="Visiteur Fiche Frais">Fiches frais par visiteur</a>
+                        </li>
 
                     @endisset
                     @isset($comptable)

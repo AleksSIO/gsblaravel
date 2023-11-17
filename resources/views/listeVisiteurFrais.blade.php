@@ -2,17 +2,17 @@
     @section('contenu1')
       <div class="w-full text-center">
           <h2 class="text-2xl font-semibold p-2 mb-4">Les fiches frais par année</h2>
-      <form action="{{ route('chemin_listeFraisAnnee') }}" method="post">
+      <form action="{{ route('chemin_listeFraisVisiteur') }}" method="post">
         {{ csrf_field() }} <!-- laravel va ajouter un champ caché avec un token -->
         <div class="corpsForm">
             <p>
-              <label for="lstAnnee" >Année à sélectionner: </label>
-              <select id="lstAnnee" name="lstAnnee">
-                  @foreach($lesAnnees as $annee)
-                      @if ($annee['annee'] == $lAnnee)
-                        <option selected value="{{ $annee['annee'] }}">{{ $annee['annee'] }}</option>
+              <label for="lstVisiteur" >Visiteur à sélectionner: </label>
+              <select id="lstVisiteur" name="lstVisiteur">
+                  @foreach($lesVisiteurs as $_visiteur)
+                      @if ($_visiteur['id'] == $keyVisiteur)
+                        <option selected value="{{ $_visiteur['id'] }}">{{ $_visieur['prenom'] . " " . $_visiteur['nom'] }}</option>
                       @else
-                        <option value="{{ $annee['annee']}}">{{ $annee['annee'] }}</option>
+                        <option value="{{ $_visiteur['id'] }}">{{ $_visiteur['prenom'] . " " . $_visiteur['nom'] }}</option>
                       @endif
                   @endforeach
               </select>

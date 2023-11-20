@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use PdoGsb;
 use MyDate;
 class etatFraisController extends Controller
@@ -163,5 +165,71 @@ class etatFraisController extends Controller
         else{
             return view('connexion')->with('erreurs',null);
         }
+    }
+
+    public function genererTypeFraisXML(Request $request)
+    {
+        $leTypeFrais = $request['typeFrais']; 
+        $lesFraisType = PdoGsb::getLesFichesFraisParType($leTypeFrais);// ... obtenir vos données
+
+        $xmlContent = view('listefraisTypexml', compact('lesFraisType'))->render();
+
+        // Enregistrez le contenu XML dans un fichier temporaire
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'fichesTypefrais');
+        file_put_contents($tempFilePath, $xmlContent);
+
+        // Définir le nom du fichier à télécharger
+        $fileName = 'fichesTypefrais.xml';
+
+        $headers = [
+            'Content-Type' => 'application/xml',
+        ];
+
+        // Retourner une réponse de téléchargement avec le fichier XML
+        return response()->download($tempFilePath, $fileName, $headers)->deleteFileAfterSend(true);
+    }
+
+    public function genererAnneeFraisXML(Request $request)
+    {
+        $lAnnee = $request['anneeFrais']; 
+        $lesFraisAnnee = PdoGsb::getLesFichesFraisParAnnee($lAnnee);
+
+        $xmlContent = view('listefraisAnneexml', compact('lesFraisAnnee'))->render();
+
+        // Enregistrez le contenu XML dans un fichier temporaire
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'fichesAnneefrais');
+        file_put_contents($tempFilePath, $xmlContent);
+
+        // Définir le nom du fichier à télécharger
+        $fileName = 'fichesAnneefrais.xml';
+
+        $headers = [
+            'Content-Type' => 'application/xml',
+        ];
+
+        // Retourner une réponse de téléchargement avec le fichier XML
+        return response()->download($tempFilePath, $fileName, $headers)->deleteFileAfterSend(true);
+    }
+
+    public function genererVisiteurFraisXML(Request $request)
+    {
+        $leVisiteur = $request['visiteurFrais']; 
+        $lesFraisVisiteur = PdoGsb::getLesFichesFraisParVisiteur($leVisiteur);
+
+        $xmlContent = view('listefraisVisiteurxml', compact('lesFraisVisiteur'))->render();
+
+        // Enregistrez le contenu XML dans un fichier temporaire
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'fichesVisiteurfrais');
+        file_put_contents($tempFilePath, $xmlContent);
+
+        // Définir le nom du fichier à télécharger
+        $fileName = 'fichesVisiteurfrais.xml';
+
+        $headers = [
+            'Content-Type' => 'application/xml',
+        ];
+
+        // Retourner une réponse de téléchargement avec le fichier XML
+        return response()->download($tempFilePath, $fileName, $headers)->deleteFileAfterSend(true);
     }
 }

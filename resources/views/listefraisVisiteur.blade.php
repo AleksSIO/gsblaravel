@@ -3,10 +3,18 @@
 
 
 <div class="overflow-auto rounded-lg">
-    <div class="text-center">
+    <div class="text-center flex items-center justify-center flex-col">
         <h2 class="text-2xl font-semibold mb-4">Fiches frais par visiteur</h2>
-        <a href="{{ route('chemin_selectionVisiteur') }}"><button class=" bg-blue-500 text-white py-2 px-4 mb-6 rounded hover:bg-blue-700">Retour</button></a>
+        <div class="flex space-x-4">
+        <a href="{{ route('chemin_selectionVisiteur') }}"><button class=" bg-blue-500  text-white py-2 px-4 mb-6 rounded hover:bg-blue-700">Retour</button></a>
+        <form method="post" action="{{ route('genererVisiteurFraisXML') }}" class="flex items-center">
+            <input type="hidden" value="{{ $leVisiteur }}" name="visiteurFrais">
+            {{ csrf_field() }} <!-- laravel va ajouter un champ caché avec un token -->
+            <input type="submit" class=" bg-blue-500 text-white relative py-2 px-4 mb-6 rounded hover:bg-blue-700" value="Générer XML">
+            </form>  
+        </div>
     </div>
+  
     <table class="w-full table-fixed">
         <caption class="caption-top">
             <h3> Fiche du visiteur : {{ $leVisiteur }} </h3>

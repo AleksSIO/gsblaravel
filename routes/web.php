@@ -104,6 +104,18 @@ Route::post('listeFraisType',[
         'as'=>'chemin_listeFraisType',
         'uses'=>'etatFraisController@voirFraisType'
 ]);
+Route::post('genererTypeFraisXML',[
+        'as'=>'genererTypeFraisXML',
+        'uses'=>'etatFraisController@genererTypeFraisXML'
+]);
+Route::post('genererAnneeFraisXML',[
+        'as'=>'genererAnneeFraisXML',
+        'uses'=>'etatFraisController@genererAnneeFraisXML'
+]);
+Route::post('genererVisiteurFraisXML',[
+        'as'=>'genererVisiteurFraisXML',
+        'uses'=>'etatFraisController@genererVisiteurFraisXML'
+]);
 
 
 

@@ -3,9 +3,16 @@
 
 
 <div class="overflow-auto rounded-lg">
-    <div class="text-center">
+    <div class="text-center flex items-center justify-center flex-col">
         <h2 class="text-2xl font-semibold mb-4">Fiches frais par année</h2>
+        <div class="flex space-x-4">
         <a href="{{ route('chemin_selectionAnnee') }}"><button class=" bg-blue-500 text-white py-2 px-4 mb-6 rounded hover:bg-blue-700">Retour</button></a>
+        <form method="post" action="{{ route('genererAnneeFraisXML') }}" class="flex items-center">
+            <input type="hidden" value="{{ $lAnnee }}" name="anneeFrais">
+            {{ csrf_field() }} <!-- laravel va ajouter un champ caché avec un token -->
+            <input type="submit" class=" bg-blue-500 text-white py-2 px-4 mb-6 rounded hover:bg-blue-700" value="Générer XML">
+        </form>
+        </div>
     </div>
     <table class="w-full table-fixed">
         <caption class="caption-top">

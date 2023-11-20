@@ -333,4 +333,27 @@ class PdoGsb{
         return $laLigne; 
 	
 	}
+
+	public function getLesTypes(){
+		$req = "select id, libelle from fraisforfait"; 
+		$res = $this->monPdo->query($req);
+		$laLigne = $res->fetchAll();
+		return $laLigne;
+	}
+
+	public function getLesFichesFraisParType($typefrais){
+		$req = "select idVisiteur, mois, ff.montant * lf.quantite as montant
+		from lignefraisforfait lf 
+		inner join fraisforfait ff on ff.id = lf.idFraisForfait 
+		where idFraisForfait = :typefrais 
+		ORDER BY mois DESC";
+		$res = $this->monPdo->prepare($req);
+        $res->bindValue(':typefrais', $typefrais, PDO::PARAM_STR);
+        $res->execute();
+        $laLigne = $res->fetchAll();
+        return $laLigne; 
+	
+	}
+
+
 }

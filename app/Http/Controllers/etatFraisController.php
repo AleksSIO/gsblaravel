@@ -128,4 +128,40 @@ class etatFraisController extends Controller
             return view('connexion')->with('erreurs',null);
         }
     }
+
+    function selectionnerTypeFrais(){
+        if(session('gestionnaire') != null){
+            $lesTypesFrais = PdoGsb::getLesTypes();
+            $gestionnaire = session('gestionnaire');
+		    // Afin de sélectionner par défaut le dernier mois dans la zone de liste
+		    // on demande toutes les clés, et on prend la première,
+		    // les mois étant triés décroissants
+		    $lesCles = array_keys( $lesTypesFrais );
+		    $fraisASelectionner = $lesCles[0];
+            return view('listeTypeFrais')
+                        ->with('lesTypesFrais', $lesTypesFrais)
+                        ->with('keyType', $fraisASelectionner)
+                        ->with('gestionnaire',$gestionnaire);
+        }
+        else{
+            return view('connexion')->with('erreurs',null);
+        }
+    }
+
+    function voirFraisType(Request $request){
+        if( session('gestionnaire')!= null){
+            $gestionnaire = session('gestionnaire');
+            $leTypeFrais = $request['lstTypeFrais']; 
+		    $lesTypesFrais = PdoGsb::getLesTypes();
+            $lesFraisType = PdoGsb::getLesFichesFraisParType($leTypeFrais);
+            $vue = view('listefraisType')->with('lesTypesFrais', $lesTypesFrais)
+                    ->with('lesFraisType', $lesFraisType)
+                    ->with('leTypeFrais', $leTypeFrais)
+                    ->with('gestionnaire',$gestionnaire);
+            return $vue;
+        }
+        else{
+            return view('connexion')->with('erreurs',null);
+        }
+    }
 }

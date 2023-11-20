@@ -96,6 +96,14 @@ Route::post('listeFraisVisiteur',[
         'as'=>'chemin_listeFraisVisiteur',
         'uses'=>'etatFraisController@voirFraisVisiteur'
 ]);
+Route::get('selectionTypeFrais',[
+        'as'=>'chemin_selectionTypeFrais',
+        'uses'=>'etatFraisController@selectionnerTypeFrais'
+]);
+Route::post('listeFraisType',[
+        'as'=>'chemin_listeFraisType',
+        'uses'=>'etatFraisController@voirFraisType'
+]);
 
 
 

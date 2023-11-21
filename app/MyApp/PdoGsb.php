@@ -239,6 +239,15 @@ class PdoGsb{
     }
 
 
+    public function getInfosComptable($login, $mdp){
+        $req = "SELECT * FROM comptable WHERE login = :login AND mdp = :mdp";
+        $res = $this->monPdo->prepare($req);
+        $res->bindValue(':login', $login, PDO::PARAM_STR);
+        $res->bindValue(':mdp', $mdp, PDO::PARAM_STR);
+        $res->execute();
+        return $res->fetch();
+    }
+
 
     /* Select ` */
 
@@ -249,6 +258,59 @@ class PdoGsb{
         return $res->fetchAll();
     }
 
+    public function listeNomVisiteurs(){
+        $req = "SELECT nom FROM visiteur";
+        $res = $this->monPdo->prepare($req);
+        $res->execute();
+        return $res->fetchAll();
+    }
+
+    public function listePrenomVisiteurs(){
+        $req = "SELECT prenom FROM visiteur";
+        $res = $this->monPdo->prepare($req);
+        $res->execute();
+        return $res->fetchAll();
+    }
+
+    public function listeMoisFraisForfait(){
+        $req = "SELECT DISTINCT `mois` FROM `fichefrais` ORDER BY mois ASC";
+        $res = $this->monPdo->prepare($req);
+        $res->execute();
+        return $res->fetchAll();
+    }
+    public function fraisbyName($nom,$prenom,$date) {
+        $req = "SELECT * FROM `visiteur`
+                INNER JOIN fichefrais on fichefrais.idVisiteur = visiteur.id
+                INNER JOIN etat on fichefrais.idEtat = etat.id
+                WHERE nom = ? AND prenom = ? AND mois = ?";
+        $res = $this->monPdo->prepare($req);
+        $res->execute([$nom,$prenom,$date]);
+        return $res->fetch();
+    }
+    public function validerfrais($id,$mois,$etat){
+        $req = "UPDATE `fichefrais`
+                SET `idEtat`=?
+                WHERE `idVisiteur`=? AND `mois`=?";
+        $res = $this->monPdo->prepare($req);
+        $res->execute([$etat, $id , $mois]);
+        return true;
+    }
+
+    public function cloturerfrais($id,$mois,$etat,$m){
+        $req = "UPDATE `fichefrais`
+                SET `idEtat`=? , `montantValide`=?
+                WHERE `idVisiteur`=? AND `mois`=?";
+
+        $res = $this->monPdo->prepare($req);
+        $res->execute([$etat, $m ,$id , $mois]);
+        return true;
+    }
+    public function lesetats(){
+        $req = "SELECT `id`,`libelle` FROM `etat`";
+        $res = $this->monPdo->prepare($req);
+        $res->execute();
+        return $res->fetchAll();
+    }
     public function unVisiteur($id){
         $req = "SELECT * FROM visiteur WHERE id=?";
         $res = $this->monPdo->prepare($req);
@@ -257,9 +319,12 @@ class PdoGsb{
     }
 
     public function suppVisiteur($id){
-        $req = "DELETE FROM `visiteur` WHERE id=?";
+        $req = "DELETE FROM `lignefraisforfait` WHERE idVisiteur=?;
+                DELETE FROM `fichefrais` WHERE idVisiteur=?;
+                DELETE FROM `visiteur` WHERE id=?";
+
         $res = $this->monPdo->prepare($req);
-        $res->execute([$id]);
+        $res->execute([$id,$id,$id]);
         return true;
     }
 

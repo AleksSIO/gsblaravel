@@ -27,7 +27,7 @@
                     <label>Adresse<br>
                         <input type="text" value="{{ $monVisiteur['adresse'] }}" name="adresse"><br>
                     </label>
-                    <label>cp<br>
+                    <label>Code Postal<br>
                         <input type="text" value="{{ $monVisiteur['cp'] }}" name="cp"><br>
                     </label>
                     <label>Ville<br>
@@ -55,7 +55,7 @@
                     <label>Adresse<br>
                         <input type="text" value="" name="adresse"><br>
                     </label>
-                    <label>cp<br>
+                    <label>Code Postal<br>
                         <input type="text" value="" name="cp"><br>
                     </label>
                     <label>Ville<br>

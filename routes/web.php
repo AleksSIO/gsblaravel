@@ -77,7 +77,20 @@ Route::post('confirmAjouterVisiteur',[
     'uses'=>'gererVisiteursController@confirmajouterVisiteur'
 ]);
 
+Route::get('validationfrais',[
+    'as'=>'chemin_validationFrais',
+    'uses'=>'gererFraisController@validerFrais'
+]);
 
+Route::post('getfrais',[
+    'as'=>'chemin_getFrais',
+    'uses'=>'gererFraisController@getFrais'
+]);
+
+Route::post('confirmerFrais',[
+    'as'=>'chemin_confirmerFrais',
+    'uses'=>'gererFraisController@confirmerFrais'
+]);
 
 
 

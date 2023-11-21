@@ -168,8 +168,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Barryvdh\DomPDF\ServiceProvider::class,
-
+    
         /*
          * Application Service Providers...
          */
@@ -179,11 +178,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\MyPdoServiceProvider::class,
-        App\Providers\MyDateServiceProvider::class
-
-
-
-
+        App\Providers\MyDateServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class
 
     ],
 
@@ -236,9 +232,9 @@ return [
         'PdoGsb' => App\Facades\PdoGsb::class,
         'MyDate' => App\Facades\MyDate::class,
         'MyApp' => App\Facades\MyApp::class,
+        "PDF" => Barryvdh\DomPDF\Facade::class
 
-        'PDF' => Barryvdh\DomPDF\Facade::class,
 
-        ],
+    ],
 
 ];

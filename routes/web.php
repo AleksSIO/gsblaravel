@@ -76,6 +76,46 @@ Route::post('confirmAjouterVisiteur',[
     'as'=>'sendVisiteurs',
     'uses'=>'gererVisiteursController@confirmajouterVisiteur'
 ]);
+Route::get('genererpdf',[
+        'as'=>'genererPDF',
+        'uses'=>'PDFController@genererPDF'
+    ]);
+Route::get('selectionAnnee',[
+        'as'=>'chemin_selectionAnnee',
+        'uses'=>'etatFraisController@selectionnerAnnee'
+]);
+Route::post('listeFraisAnnee',[
+        'as'=>'chemin_listeFraisAnnee',
+        'uses'=>'etatFraisController@voirFraisAnnee'
+]);
+Route::get('selectionVisiteur',[
+        'as'=>'chemin_selectionVisiteur',
+        'uses'=>'etatFraisController@selectionnerVisiteur'
+]);
+Route::post('listeFraisVisiteur',[
+        'as'=>'chemin_listeFraisVisiteur',
+        'uses'=>'etatFraisController@voirFraisVisiteur'
+]);
+Route::get('selectionTypeFrais',[
+        'as'=>'chemin_selectionTypeFrais',
+        'uses'=>'etatFraisController@selectionnerTypeFrais'
+]);
+Route::post('listeFraisType',[
+        'as'=>'chemin_listeFraisType',
+        'uses'=>'etatFraisController@voirFraisType'
+]);
+Route::post('genererTypeFraisXML',[
+        'as'=>'genererTypeFraisXML',
+        'uses'=>'etatFraisController@genererTypeFraisXML'
+]);
+Route::post('genererAnneeFraisXML',[
+        'as'=>'genererAnneeFraisXML',
+        'uses'=>'etatFraisController@genererAnneeFraisXML'
+]);
+Route::post('genererVisiteurFraisXML',[
+        'as'=>'genererVisiteurFraisXML',
+        'uses'=>'etatFraisController@genererVisiteurFraisXML'
+]);
 
 Route::get('validationfrais',[
     'as'=>'chemin_validationFrais',

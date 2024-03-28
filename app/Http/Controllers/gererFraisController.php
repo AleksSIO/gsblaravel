@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use PdoGsb;
 use MyDate;
+
 class gererFraisController extends Controller{
 
     function saisirFrais(Request $request){
@@ -85,22 +86,24 @@ class gererFraisController extends Controller{
 
     function confirmerFrais(Request $request)
     {
-        $id = $request['id'];
         $nom  = $request['nom'];
         $prenom = $request['prenom'];
         $mois = $request['mois'];
         $montantValide = $request['montantValide'];
         $etat = $request['lesetats'];
-
-
-dump($etat);
+        $zero = 0;
+        $id_arr = array();
+        $id_arr = PdoGsb::NamebyId($nom,$prenom);
+        $id = $id_arr[0];
         if( session('comptable') != null){
             $comptable = session('comptable');
-            $lefrais = PdoGsb::fraisbyName($nom,$prenom,$mois);
+            if($etat =='VA'){
+                PdoGsb::validerfrais($id,$mois,$etat,$montantValide);
+            }elseif($etat =='CL'){
+                PdoGsb::cloturerfrais($id,$mois,$etat,$montantValide,$zero);
+            }
             $lesetats = PdoGsb::lesetats();
-
-            if($etat =='VA'){  $valider = PdoGsb::validerfrais($id,$mois,$etat); }
-            elseif($etat =='CL'){ $cloturer =  PdoGsb::cloturerfrais($id,$mois,$etat,0);}
+            $lefrais = PdoGsb::fraisbyName($nom,$prenom,$mois);
 
             $view = view('lefrais')
                 ->with('lefrais',$lefrais)

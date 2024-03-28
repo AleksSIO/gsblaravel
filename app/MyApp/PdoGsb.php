@@ -21,9 +21,12 @@ class PdoGsb{
         self::$mdp=Config::get('database.connections.mysql.password');
         $this->monPdo = new PDO(self::$serveur.';'.self::$bdd, self::$user, self::$mdp);
   		$this->monPdo->query("SET CHARACTER SET utf8");
-	}
-	public function _destruct(){
-		$this->monPdo =null;
+        $this->monPdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $this->monPdo->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+
+    }
+	public function __destruct(){
+		$this->monPdo = null;
 	}
 
 
@@ -66,7 +69,7 @@ class PdoGsb{
  * concernées par les deux arguments
 
  * @param $idVisiteur
- * @param $mois sous la forme aaaamm
+ * @param '$mois' forme aaaamm
  * @return l'id, le libelle et la quantité sous la forme d'un tableau associatif
 */
 	public function getLesFraisForfait($idVisiteur, $mois){
@@ -167,8 +170,7 @@ class PdoGsb{
 		$lesIdFrais = $this->getLesIdFrais();
 		foreach($lesIdFrais as $uneLigneIdFrais){
 			$unIdFrais = $uneLigneIdFrais['idfrais'];
-			$req = "insert into lignefraisforfait(idvisiteur,mois,idFraisForfait,quantite)
-			values('$idVisiteur','$mois','$unIdFrais',0)";
+			$req = "insert into lignefraisforfait(idvisiteur,mois,idFraisForfait,quantite) values('$idVisiteur','$mois','$unIdFrais',0)";
 			$this->monPdo->exec($req);
 		 }
 	}
@@ -249,14 +251,6 @@ class PdoGsb{
     }
 
 
-    public function getInfosComptable($login, $mdp){
-        $req = "SELECT * FROM comptable WHERE login = :login AND mdp = :mdp";
-        $res = $this->monPdo->prepare($req);
-        $res->bindValue(':login', $login, PDO::PARAM_STR);
-        $res->bindValue(':mdp', $mdp, PDO::PARAM_STR);
-        $res->execute();
-        return $res->fetch();
-    }
 
 
     /* Select ` */
@@ -297,23 +291,41 @@ class PdoGsb{
         $res->execute([$nom,$prenom,$date]);
         return $res->fetch();
     }
-    public function validerfrais($id,$mois,$etat){
-        $req = "UPDATE `fichefrais`
-                SET `idEtat`=?
-                WHERE `idVisiteur`=? AND `mois`=?";
+
+    public function NamebyId($nom,$prenom) {
+        $req = "SELECT id FROM `visiteur`
+                WHERE nom = ? AND prenom = ?";
         $res = $this->monPdo->prepare($req);
-        $res->execute([$etat, $id , $mois]);
-        return true;
+        $res->execute([$nom,$prenom]);
+        return $res->fetch();
     }
-
-    public function cloturerfrais($id,$mois,$etat,$m){
-        $req = "UPDATE `fichefrais`
-                SET `idEtat`=? , `montantValide`=?
-                WHERE `idVisiteur`=? AND `mois`=?";
-
-        $res = $this->monPdo->prepare($req);
-        $res->execute([$etat, $m ,$id , $mois]);
-        return true;
+    public function validerfrais($id, $mois, $etat, $montantValide){
+        $r = 0;
+        try {
+            $req = "
+            UPDATE `fichefrais`
+            SET `idEtat` = :etat
+            WHERE `idVisiteur` = :id AND `mois` = :mois AND `montantValide` = :montantV";
+            $res = $this->monPdo->prepare($req);
+            $r = $res->execute(['etat' => $etat,'id' => $id, 'mois' => $mois, 'montantV' => $montantValide]);
+        }catch (PDOException $e) {
+            echo "Erreur PDO : " . $e->getMessage();
+        }
+        return $r;
+    }
+    public function cloturerfrais($id, $mois, $etat, $montantValide, $m){
+        $r = false;
+        try {
+            $req = "
+            UPDATE `fichefrais`
+            SET `idEtat` = :etat, `montantValide` = :montant
+            WHERE `idVisiteur` = :id AND `mois` = :mois AND `montantValide` = :montantV";
+            $res = $this->monPdo->prepare($req);
+            $r = $res->execute(['etat' => $etat, 'montant' => $m, 'id' => $id, 'mois' => $mois, 'montantV' => $montantValide]);
+        } catch (PDOException $e) {
+            echo "Erreur PDO : " . $e->getMessage();
+        }
+        return $r;
     }
     public function lesetats(){
         $req = "SELECT `id`,`libelle` FROM `etat`";
@@ -357,7 +369,7 @@ class PdoGsb{
     }
 
 	public function getLesAnnees(){
-		$req = "select distinct(left(mois, 4)) as annee from lignefraisforfait ORDER BY annee DESC"; 
+		$req = "select distinct(left(mois, 4)) as annee from lignefraisforfait ORDER BY annee DESC";
 		$res = $this->monPdo->query($req);
 		$laLigne = $res->fetchAll();
 		return $laLigne;
@@ -377,30 +389,30 @@ class PdoGsb{
         $res->bindValue(':annee', $annee . '%', PDO::PARAM_STR_CHAR);
         $res->execute();
         $laLigne = $res->fetchAll();
-        return $laLigne; 
+        return $laLigne;
 	}
 
 	public function getLesFichesFraisParVisiteur($idVisiteur){
-		$req = "select mois, 
+		$req = "select mois,
 		sum(ff.montant * case when lf.idFraisForfait = 'ETP' then lf.quantite END) as 'ETP',
 		sum(ff.montant * case when lf.idFraisForfait = 'KM' then lf.quantite END) as 'KM',
 		sum(ff.montant * case when lf.idFraisForfait = 'NUI' then lf.quantite END) as 'NUI',
-		sum(ff.montant * case when lf.idFraisForfait = 'REP' then lf.quantite END) as 'REP' 
-		from lignefraisforfait lf 
-		inner join fraisforfait ff on ff.id = lf.idFraisForfait 
-		where idVisiteur = :visiteur 
-		GROUP BY mois 
+		sum(ff.montant * case when lf.idFraisForfait = 'REP' then lf.quantite END) as 'REP'
+		from lignefraisforfait lf
+		inner join fraisforfait ff on ff.id = lf.idFraisForfait
+		where idVisiteur = :visiteur
+		GROUP BY mois
 		ORDER BY mois DESC";
 		$res = $this->monPdo->prepare($req);
         $res->bindValue(':visiteur', $idVisiteur, PDO::PARAM_STR);
         $res->execute();
         $laLigne = $res->fetchAll();
-        return $laLigne; 
-	
+        return $laLigne;
+
 	}
 
 	public function getLesTypes(){
-		$req = "select id, libelle from fraisforfait"; 
+		$req = "select id, libelle from fraisforfait";
 		$res = $this->monPdo->query($req);
 		$laLigne = $res->fetchAll();
 		return $laLigne;
@@ -408,16 +420,16 @@ class PdoGsb{
 
 	public function getLesFichesFraisParType($typefrais){
 		$req = "select idVisiteur, mois, ff.montant * lf.quantite as montant
-		from lignefraisforfait lf 
-		inner join fraisforfait ff on ff.id = lf.idFraisForfait 
-		where idFraisForfait = :typefrais 
+		from lignefraisforfait lf
+		inner join fraisforfait ff on ff.id = lf.idFraisForfait
+		where idFraisForfait = :typefrais
 		ORDER BY mois DESC";
 		$res = $this->monPdo->prepare($req);
         $res->bindValue(':typefrais', $typefrais, PDO::PARAM_STR);
         $res->execute();
         $laLigne = $res->fetchAll();
-        return $laLigne; 
-	
+        return $laLigne;
+
 	}
 
 

@@ -117,6 +117,8 @@ Route::post('genererVisiteurFraisXML',[
         'uses'=>'etatFraisController@genererVisiteurFraisXML'
 ]);
 
+/* Mission C */
+
 Route::get('validationfrais',[
     'as'=>'chemin_validationFrais',
     'uses'=>'gererFraisController@validerFrais'

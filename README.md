@@ -36,6 +36,22 @@ Sécurité :
 Internationalisation :
     Support multilingue pour une meilleure expérience utilisateur.
 
+### Technologies utilisées :
+
+- PHP pour le backend
+- MySQL pour la base de données
+- HTML/CSS/JavaScript pour le frontend
+- Framework MVC  Laravel pour la structure du projet
+- Bibliothèques pour la génération de rapports (DomPDF)
+
+### Étapes de développement :
+
+- Analyse des besoins et conception de l'application.
+- Mise en place de l'environnement de développement (depot github, base de données).
+- Développement des fonctionnalités pour chaque utilisateur.
+
+Ce projet de gestion des frais de transports en PHP MVC offrira une solution pratique pour les utilisateurs qui souhaitent mieux contrôler leurs dépenses de déplacement.
+
 ### Installation :
 
 - Clonez ce dépôt sur votre machine locale.

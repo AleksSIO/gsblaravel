@@ -7,7 +7,7 @@ class PdoGsb{
         private static string $bdd;
         private static mixed $user;
         private static mixed $mdp;
-        private PDO $monPdo;
+        private ?PDO $monPdo;
 
 /**
  * crée l'instance de PDO qui sera sollicitée
@@ -26,7 +26,9 @@ class PdoGsb{
 
     }
 	public function __destruct(){
-		$this->monPdo = null;
+		if($this->monPdo !== null){
+            $this->monPdo = null;
+        }
 	}
 
 
@@ -386,7 +388,7 @@ class PdoGsb{
         where mois like :annee
         GROUP BY lf.idVisiteur";
         $res = $this->monPdo->prepare($req);
-        $res->bindValue(':annee', $annee . '%', PDO::PARAM_STR_CHAR);
+        $res->bindValue(':annee', $annee . '%', PDO::PARAM_STR);
         $res->execute();
         $laLigne = $res->fetchAll();
         return $laLigne;

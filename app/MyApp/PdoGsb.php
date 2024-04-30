@@ -249,14 +249,6 @@ class PdoGsb{
     }
 
 
-    public function getInfosComptable($login, $mdp){
-        $req = "SELECT * FROM comptable WHERE login = :login AND mdp = :mdp";
-        $res = $this->monPdo->prepare($req);
-        $res->bindValue(':login', $login, PDO::PARAM_STR);
-        $res->bindValue(':mdp', $mdp, PDO::PARAM_STR);
-        $res->execute();
-        return $res->fetch();
-    }
 
 
     /* Select ` */
@@ -357,7 +349,7 @@ class PdoGsb{
     }
 
 	public function getLesAnnees(){
-		$req = "select distinct(left(mois, 4)) as annee from lignefraisforfait ORDER BY annee DESC"; 
+		$req = "select distinct(left(mois, 4)) as annee from lignefraisforfait ORDER BY annee DESC";
 		$res = $this->monPdo->query($req);
 		$laLigne = $res->fetchAll();
 		return $laLigne;
@@ -377,30 +369,30 @@ class PdoGsb{
         $res->bindValue(':annee', $annee . '%', PDO::PARAM_STR_CHAR);
         $res->execute();
         $laLigne = $res->fetchAll();
-        return $laLigne; 
+        return $laLigne;
 	}
 
 	public function getLesFichesFraisParVisiteur($idVisiteur){
-		$req = "select mois, 
+		$req = "select mois,
 		sum(ff.montant * case when lf.idFraisForfait = 'ETP' then lf.quantite END) as 'ETP',
 		sum(ff.montant * case when lf.idFraisForfait = 'KM' then lf.quantite END) as 'KM',
 		sum(ff.montant * case when lf.idFraisForfait = 'NUI' then lf.quantite END) as 'NUI',
-		sum(ff.montant * case when lf.idFraisForfait = 'REP' then lf.quantite END) as 'REP' 
-		from lignefraisforfait lf 
-		inner join fraisforfait ff on ff.id = lf.idFraisForfait 
-		where idVisiteur = :visiteur 
-		GROUP BY mois 
+		sum(ff.montant * case when lf.idFraisForfait = 'REP' then lf.quantite END) as 'REP'
+		from lignefraisforfait lf
+		inner join fraisforfait ff on ff.id = lf.idFraisForfait
+		where idVisiteur = :visiteur
+		GROUP BY mois
 		ORDER BY mois DESC";
 		$res = $this->monPdo->prepare($req);
         $res->bindValue(':visiteur', $idVisiteur, PDO::PARAM_STR);
         $res->execute();
         $laLigne = $res->fetchAll();
-        return $laLigne; 
-	
+        return $laLigne;
+
 	}
 
 	public function getLesTypes(){
-		$req = "select id, libelle from fraisforfait"; 
+		$req = "select id, libelle from fraisforfait";
 		$res = $this->monPdo->query($req);
 		$laLigne = $res->fetchAll();
 		return $laLigne;
@@ -408,16 +400,16 @@ class PdoGsb{
 
 	public function getLesFichesFraisParType($typefrais){
 		$req = "select idVisiteur, mois, ff.montant * lf.quantite as montant
-		from lignefraisforfait lf 
-		inner join fraisforfait ff on ff.id = lf.idFraisForfait 
-		where idFraisForfait = :typefrais 
+		from lignefraisforfait lf
+		inner join fraisforfait ff on ff.id = lf.idFraisForfait
+		where idFraisForfait = :typefrais
 		ORDER BY mois DESC";
 		$res = $this->monPdo->prepare($req);
         $res->bindValue(':typefrais', $typefrais, PDO::PARAM_STR);
         $res->execute();
         $laLigne = $res->fetchAll();
-        return $laLigne; 
-	
+        return $laLigne;
+
 	}
 
 

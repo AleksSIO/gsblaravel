@@ -40,15 +40,6 @@
                         <li >
                             <strong>Bonjour {{ $comptable['nom'] . ' ' . $comptable['prenom'] }}</strong>
                         </li>
-                        <li class="mb-2">
-                            <a href="{{ route('chemin_gestionVisiteurs') }}" title="Gestion des visiteurs">Gestion des visiteurs</a>
-                        </li>
-
-                    @endisset
-                    @isset($comptable)
-                        <li >
-                            <strong>Bonjour {{ $comptable['nom'] . ' ' . $comptable['prenom'] }}</strong>
-                        </li>
 
                         <li class="mb-2">
                             <a href="{{ route('chemin_validationFrais')}}" title="Validation de frais ">Validation de frais</a>

@@ -7,7 +7,7 @@ class PdoGsb{
         private static string $bdd;
         private static mixed $user;
         private static mixed $mdp;
-        private PDO $monPdo;
+        private ?PDO $monPdo;
 
 /**
  * crée l'instance de PDO qui sera sollicitée
@@ -21,9 +21,14 @@ class PdoGsb{
         self::$mdp=Config::get('database.connections.mysql.password');
         $this->monPdo = new PDO(self::$serveur.';'.self::$bdd, self::$user, self::$mdp);
   		$this->monPdo->query("SET CHARACTER SET utf8");
-	}
-	public function _destruct(){
-		$this->monPdo =null;
+        $this->monPdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $this->monPdo->setAttribute(PDO::ATTR_AUTOCOMMIT, true);
+
+    }
+	public function __destruct(){
+		if($this->monPdo !== null){
+            $this->monPdo = null;
+        }
 	}
 
 
@@ -66,7 +71,7 @@ class PdoGsb{
  * concernées par les deux arguments
 
  * @param $idVisiteur
- * @param $mois sous la forme aaaamm
+ * @param '$mois' forme aaaamm
  * @return l'id, le libelle et la quantité sous la forme d'un tableau associatif
 */
 	public function getLesFraisForfait($idVisiteur, $mois){
@@ -167,8 +172,7 @@ class PdoGsb{
 		$lesIdFrais = $this->getLesIdFrais();
 		foreach($lesIdFrais as $uneLigneIdFrais){
 			$unIdFrais = $uneLigneIdFrais['idfrais'];
-			$req = "insert into lignefraisforfait(idvisiteur,mois,idFraisForfait,quantite)
-			values('$idVisiteur','$mois','$unIdFrais',0)";
+			$req = "insert into lignefraisforfait(idvisiteur,mois,idFraisForfait,quantite) values('$idVisiteur','$mois','$unIdFrais',0)";
 			$this->monPdo->exec($req);
 		 }
 	}
@@ -289,23 +293,41 @@ class PdoGsb{
         $res->execute([$nom,$prenom,$date]);
         return $res->fetch();
     }
-    public function validerfrais($id,$mois,$etat){
-        $req = "UPDATE `fichefrais`
-                SET `idEtat`=?
-                WHERE `idVisiteur`=? AND `mois`=?";
+
+    public function NamebyId($nom,$prenom) {
+        $req = "SELECT id FROM `visiteur`
+                WHERE nom = ? AND prenom = ?";
         $res = $this->monPdo->prepare($req);
-        $res->execute([$etat, $id , $mois]);
-        return true;
+        $res->execute([$nom,$prenom]);
+        return $res->fetch();
     }
-
-    public function cloturerfrais($id,$mois,$etat,$m){
-        $req = "UPDATE `fichefrais`
-                SET `idEtat`=? , `montantValide`=?
-                WHERE `idVisiteur`=? AND `mois`=?";
-
-        $res = $this->monPdo->prepare($req);
-        $res->execute([$etat, $m ,$id , $mois]);
-        return true;
+    public function validerfrais($id, $mois, $etat, $montantValide){
+        $r = 0;
+        try {
+            $req = "
+            UPDATE `fichefrais`
+            SET `idEtat` = :etat
+            WHERE `idVisiteur` = :id AND `mois` = :mois AND `montantValide` = :montantV";
+            $res = $this->monPdo->prepare($req);
+            $r = $res->execute(['etat' => $etat,'id' => $id, 'mois' => $mois, 'montantV' => $montantValide]);
+        }catch (PDOException $e) {
+            echo "Erreur PDO : " . $e->getMessage();
+        }
+        return $r;
+    }
+    public function cloturerfrais($id, $mois, $etat, $montantValide, $m){
+        $r = false;
+        try {
+            $req = "
+            UPDATE `fichefrais`
+            SET `idEtat` = :etat, `montantValide` = :montant
+            WHERE `idVisiteur` = :id AND `mois` = :mois AND `montantValide` = :montantV";
+            $res = $this->monPdo->prepare($req);
+            $r = $res->execute(['etat' => $etat, 'montant' => $m, 'id' => $id, 'mois' => $mois, 'montantV' => $montantValide]);
+        } catch (PDOException $e) {
+            echo "Erreur PDO : " . $e->getMessage();
+        }
+        return $r;
     }
     public function lesetats(){
         $req = "SELECT `id`,`libelle` FROM `etat`";
@@ -366,7 +388,7 @@ class PdoGsb{
         where mois like :annee
         GROUP BY lf.idVisiteur";
         $res = $this->monPdo->prepare($req);
-        $res->bindValue(':annee', $annee . '%', PDO::PARAM_STR_CHAR);
+        $res->bindValue(':annee', $annee . '%', PDO::PARAM_STR);
         $res->execute();
         $laLigne = $res->fetchAll();
         return $laLigne;

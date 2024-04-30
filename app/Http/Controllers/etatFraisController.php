@@ -79,7 +79,7 @@ class etatFraisController extends Controller
     }
 
     function voirFraisAnnee(Request $request){
-        if( session('gestionnaire')!= null){
+        if(session('gestionnaire') != null){
             $gestionnaire = session('gestionnaire');
             $lAnnee = $request['lstAnnee']; 
 		    $lesAnnees = PdoGsb::getLesAnnees();

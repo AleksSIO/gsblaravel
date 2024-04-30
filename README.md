@@ -1,121 +1,68 @@
-# gsb-laravel-master
-Cas GSB en utilisant laravel  
-- [Installation et Mise en oeuvre](#Installation-et-Mise-en-oeuvre)
-    - [Installation](#Installation)
-    - [Copie des fichiers de gsb](#Copie-des-fichiers-de-gsb)
-- [Bugs à l'utilisation](#Bugs-à-l'utilisation)
-    - [Erreur 404](#Erreur-404)
-    - [Pas d'erreur affichée](#Pas-d'erreur-affichée)
-    - [Debugger votre programme](#Debugger-votre-programme)
-- [Exemple](#Exemple-créer-une-page-test)
-    - [Étape 1 créer le lien dans le sommaire](#Étape-1-créer-le-lien-dans-le-sommaire)
-    - [Étape 2 créer la route](#Étape-2-créer-la-route)
-    - [Étape 3.1 Ajouter une méthode au contrôleur, EtatFraisController](#Étape-31-Ajouter-une-méthode-au-contrôleur-EtatFraisController)
-    - [Étape 3.2 Ajouter une méthode à un nouveau contrôleur](#Étape-32-Ajouter-une-méthode-à-un-nouveau-contrôleur)
-    - [Étape 4 Créer la vue ](#Étape-4-Créer-la-vue)
+# Gsb Laravel
 
+Gestion des Frais - Application Web en PHP/Laravel
+### Description :
 
-## Installation et Mise en oeuvre
+![Logo de l'application](/public/images/logo-preview.png)
+<br>
+Ce projet est une application web de gestion des frais développée en utilisant le framework PHP Laravel. 
+L'objectif principal est de permettre aux utilisateurs de différents rôles (visiteur, comptable et 
+gestionnaire) de soumettre, visualiser et gérer leurs dépenses de manière efficace.
 
-### Installation
-La première étape consiste à installer une version standard de LARAVEL. Pour cela, il est plus facile d'utiliser 
-l'application **composer**. Pour tester si composer est actif saisir dans le terminal :
-> composer -V
+### Fonctionnalités Principales :
 
-S'il n'y a rien et que vous utilisez Laragon allez dans le repertoire de composer en saisissant :
->cd le/chemin/de/composer
+Authentification et Autorisation :
+    Les utilisateurs doivent s'authentifier pour accéder à l'application.
+    L'accès aux fonctionnalités est restreint en fonction du rôle de l'utilisateur.
 
-Une fois **composer** identifié saisissez :
-> composer selfupdate
+Gestion des Frais :
+    Interface conviviale pour soumettre des dépenses avec toutes les informations nécessaires.
+    Possibilité de télécharger des pièces justificatives pour les dépenses.
 
-Composer sera mis à jour. En cas d'erreur, rien de grave, vous pouvez continuer le process.
-* Déplacez-vous pour aller dans le répertoire de publication (www sous Windows).
-* Ouvrez une console dans ce répertoire. Saisissez :
-> composer create-project --prefer-dist laravel/laravel gsbLaravel
+Validation des Frais :
+    Les gestionnaires peuvent approuver ou rejeter les dépenses soumises par les utilisateurs.
+    Interface permettant de visualiser et de gérer les dépenses en attente.
 
-### Copie des fichiers de gsb
-* Téléchargez gsb-laravel-master
-* Copiez les fichiers du zip dans votre répertoire
-* Répondez que vous voulez modifier à chaque fois que la question est posée.
-* Il faudra modifier si nécessaire les paramètres de connexion du fichier d'environnement :
->  .env 
+Génération de Rapports :
+    Capacité à générer des rapports détaillés sur les frais.
+    Possibilité de filtrer les rapports par divers critères.
 
-## Bugs à l'utilisation
-### Erreur 404
-Une fois installé, avec laragon, vous pouvez rencontrer des erreurs avec les routes (erreur 404).  
-Dans ce cas, il faut lancer le serveur interne de laravel.
-1. Lancer le terminal
-2. se déplacer dans le répertoire ou se trouve gsbLaravel
-3. saisir : `php artisan serve`
-4. Dans le navigateur saisir http://127.0.0.1:8000 
-### Pas d'erreur affichée
-Dans certains cas l'application "tourne" sans afficher d'erreurs.
-Avec Laragon choisissez :
-* le serveur apache
-* la version 8.x.x de php
-## Debugger votre programme
-1. L'instruction **dd()** affiche les données passées en paramètre et stoppe le programme
-2. L'instruction **dump()** affiche les données passées en paramètre et continue l'exécution
-3. Les logs sont visibles dans le répertoire **storage/logs**
-4. Si la page d'erreur n'apparait pas, vous pouvez installer telescope : `php artisan telescope:install` 
+Tableau de Bord :
+    Tableau de bord personnalisé pour chaque type d'utilisateur.
 
-2 outils pour debugger :
-#### [laravel-debugbar](https://github.com/barryvdh/laravel-debugbar)
-> composer require barryvdh/laravel-debugbar --dev
-#### [laravel-ide-helper](https://github.com/barryvdh/laravel-ide-helper)
-> composer require --dev barryvdh/laravel-ide-helper
+Sécurité :
+    Mesures de sécurité mises en place pour protéger les données sensibles et prévenir les attaques.
 
-Cela donne accès à des commandes **artisan**
-## Exemple créer une page test
-Cet Exemple est valable pour le visiteur, à vous de l’adapter pour un autre type d’intervenant. 
-### Étape 1 créer le lien dans le sommaire
-```
-<li class="smenu">  
-<a href="{{ route('chemin_test') }}" title="test">test</a> 
-</li>
-```
-### Étape 2 créer la route
-Ici, on affiche des données, d'où la méthode GET.
-```
-Route::get('test',[ 
-    'as'=>'chemin_test', 
-    'uses'=>'etatFraisController@test' 
-]);
-```
-### Étape 31 Ajouter une méthode au contrôleur EtatFraisController
-```
-function test(){ 
-    if( session('visiteur')!= null){    //Sans la session l’insertion du sommaire  
-    $visiteur = session('visiteur');    //provoque une erreur 
-    $idVisiteur = $visiteur['id']; 
-    return view('test') ->with('visiteur',$visiteur); 
-    } 
-    else{ 
-        return view('connexion')->with('erreurs',null); 
-    } 
-}
-```
-### Étape 32 Ajouter une méthode à un nouveau contrôleur
-Dans ce cas il est préférable de créer le contrôleur avec **artisan**
->php artisan make:controller MonController
+Internationalisation :
+    Support multilingue pour une meilleure expérience utilisateur.
 
-La suite est identique :
-```
-function test(){ 
-    if( session('visiteur')!= null){    //Sans la session l’insertion du sommaire  
-    $visiteur = session('visiteur');    //provoque une erreur 
-    $idVisiteur = $visiteur['id']; 
-    return view('test') ->with('visiteur',$visiteur); 
-    } 
-    else{ 
-        return view('connexion')->with('erreurs',null); 
-    } 
-}
-```
-### Étape 4 Créer la vue 
-```
-@extends ('sommaire') 
-    @section('contenu1') 
-     <h1>titre</h1> 
-    @endsection 
-```
+### Technologies utilisées :
+
+- PHP pour le backend
+- MySQL pour la base de données
+- HTML/CSS/JavaScript pour le frontend
+- Framework MVC  Laravel pour la structure du projet
+- Bibliothèques pour la génération de rapports (DomPDF)
+
+### Étapes de développement :
+
+- Analyse des besoins et conception de l'application.
+- Mise en place de l'environnement de développement (depot github, base de données).
+- Développement des fonctionnalités pour chaque utilisateur.
+
+Ce projet de gestion des frais de transports en PHP MVC offrira une solution pratique pour les utilisateurs qui souhaitent mieux contrôler leurs dépenses de déplacement.
+
+### Installation :
+
+- Clonez ce dépôt sur votre machine locale.
+- Assurez-vous que PHP, Composer et Laravel sont installés sur votre système.
+- Configurez votre base de données dans le fichier .env.
+- Exécutez composer install pour installer les dépendances.
+- Exécutez php artisan migrate pour exécuter les migrations de base de données.
+- Lancez le serveur Laravel avec php artisan serve.
+- Accédez à l'application via votre navigateur et commencez à utiliser.
+
+### Contributeurs :
+
+- AleksSIO
+- Amined9

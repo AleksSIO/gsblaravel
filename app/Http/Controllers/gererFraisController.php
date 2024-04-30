@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use PdoGsb;
 use MyDate;
+
 class gererFraisController extends Controller{
 
     function saisirFrais(Request $request){

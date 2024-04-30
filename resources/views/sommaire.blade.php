@@ -1,6 +1,6 @@
 @extends ('modeles/visiteur')
     @section('menu')
-        <div class="bg-blue-500 w-2/8 h-screen p-4">
+        <div class="bg-blue-500 w-2/8 h-auto p-4">
             <!-- Navigation links -->
             <div><img src="{{ asset('images/logo-preview.png')}}" alt="GSB" alt="Laboratoire Galaxy-Swiss Bourdin" title="Laboratoire Galaxy-Swiss Bourdin" ></div>
             <nav class="text-white">
